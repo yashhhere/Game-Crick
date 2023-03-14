@@ -12,13 +12,15 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Player {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String playerName;
     private int wicketTaken;
     private int runsScored;
     private int ballsFaced;
-//    private int runABall;
+    private int runABall;
     private boolean isOut;
+    private Long teamId;
 
     public int getRunABall(String playerKind) {
         if(playerKind.equals("batsman")){

@@ -28,7 +28,7 @@ public class MatchController {
         teamA.setTeamName("India");
         Team teamB = new Team();
         Scanner sc = new Scanner(System.in);
-        teamB.setTeamName("India2");
+        teamB.setTeamName("Australia");
         numOvers = 5;
         for(int i=0;i<11;i++){
             Player pi = new Player();

@@ -1,12 +1,16 @@
 package com.tekion.GameCrick.Service;
+import com.tekion.GameCrick.Repository.TeamRepository;
 import com.tekion.GameCrick.model.Team;
 import com.tekion.GameCrick.model.Player;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 @Service
 public class InningService {
+    @Autowired
+    private TeamRepository teamRepository;
     public void playInning(Team teamA, int numOvers, int target) {
         ArrayList<Player> teamAPlayers = teamA.getTeamMembers();
         int index = 2;
@@ -44,5 +48,6 @@ public class InningService {
                 if(teamA.getTotalScore()>=target)break outer;
             }
         }
+        teamRepository.save(teamA);
     }
 }
