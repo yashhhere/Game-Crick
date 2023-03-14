@@ -1,10 +1,24 @@
 package com.tekion.GameCrick.model;
 
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Player {
+    @Id
+    private Long id;
     private String playerName;
     private int wicketTaken;
     private int runsScored;
     private int ballsFaced;
+//    private int runABall;
+    private boolean isOut;
 
     public int getRunABall(String playerKind) {
         if(playerKind.equals("batsman")){
@@ -19,56 +33,4 @@ public class Player {
         }
         return 0;
     }
-
-    public void setRunABall(int runABall) {
-        this.runABall = runABall;
-    }
-
-    private int runABall;
-
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
-
-    public int getWicketTaken() {
-        return wicketTaken;
-    }
-
-    public void setWicketTaken(int wicketTaken) {
-        this.wicketTaken = wicketTaken;
-    }
-
-    public int getRunsScored() {
-        return runsScored;
-    }
-
-    public void setRunsScored(int runsScored) {
-        this.runsScored = runsScored;
-    }
-
-    public int getBallsFaced() {
-        return ballsFaced;
-    }
-
-    public void setBallsFaced(int ballsFaced) {
-        this.ballsFaced = ballsFaced;
-    }
-
-    public boolean isOut() {
-        return isOut;
-    }
-
-    public void setOut(boolean out) {
-        isOut = out;
-    }
-
-    private boolean isOut;
-    public Player(String name){
-        this.playerName = name;
-    }
-
 }

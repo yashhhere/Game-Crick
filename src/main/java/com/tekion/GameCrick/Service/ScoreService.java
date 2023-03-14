@@ -1,6 +1,9 @@
-package com.tekion.GameCrick.controller;
+package com.tekion.GameCrick.Service;
+import org.springframework.stereotype.Service;
+
 import java.util.Random;
-public class Score {
+@Service
+public class ScoreService{
     public Random RANDOM = new Random(System.currentTimeMillis());
     public int nextSkewedBoundedDouble(int min, int max, int bias) {
         int range = max - min;

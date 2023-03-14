@@ -1,8 +1,9 @@
-package com.tekion.GameCrick.view;
+package com.tekion.GameCrick.Service;
 import com.tekion.GameCrick.model.Team;
-import java.util.Formatter;
+import org.springframework.stereotype.Service;
 
-public class Scoreboard {
+@Service
+public class ScoreboardService {
     public void printScore(Team teamA, Team teamB, int numOvers){
         System.out.println("Player Name\t\tRuns Scored\t\tBalls faced");
 

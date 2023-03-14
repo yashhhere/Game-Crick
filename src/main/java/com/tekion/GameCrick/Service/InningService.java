@@ -1,11 +1,12 @@
-package com.tekion.GameCrick.controller;
+package com.tekion.GameCrick.Service;
 import com.tekion.GameCrick.model.Team;
 import com.tekion.GameCrick.model.Player;
-import com.tekion.GameCrick.view.Scoreboard;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
-public class Inning {
+@Service
+public class InningService {
     public void playInning(Team teamA, int numOvers, int target) {
         ArrayList<Player> teamAPlayers = teamA.getTeamMembers();
         int index = 2;
@@ -24,13 +25,13 @@ public class Inning {
                 if (runs == 5 || runs >= 7 && teamA.getTotalScore() < target) {
                     striker.setBallsFaced(striker.getBallsFaced() + 1);
                     striker.setOut(true);
-                    teamA.addWickets();
+                    teamA.setTotalWickets(teamA.getTotalWickets() + 1);
                     if (index == 11) break outer;
                     striker = teamAPlayers.get(index++);
                 } else if (runs == 6 || runs == 4 || runs == 2 || runs == 0 && teamA.getTotalScore() < target) {
                     striker.setRunsScored(striker.getRunsScored() + runs);
                     striker.setBallsFaced(striker.getBallsFaced() + 1);
-                    teamA.addRuns(runs);
+                    teamA.setTotalScore(teamA.getTotalScore() + runs);
 
                 } else if (runs == 3 || runs == 1 && teamA.getTotalScore() < target) {
                     striker.setRunsScored(striker.getRunsScored() + runs);
