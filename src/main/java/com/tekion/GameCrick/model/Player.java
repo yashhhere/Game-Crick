@@ -15,10 +15,13 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String playerName;
+    @Transient
     private int wicketTaken;
     private int runsScored;
     private int ballsFaced;
+    @Transient
     private int runABall;
+    @Transient
     private boolean isOut;
     private Long teamId;
 

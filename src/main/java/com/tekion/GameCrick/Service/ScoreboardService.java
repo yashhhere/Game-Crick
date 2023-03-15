@@ -1,13 +1,23 @@
 package com.tekion.GameCrick.Service;
+import com.tekion.GameCrick.Repository.ScoreBoardRepository;
+import com.tekion.GameCrick.model.Player;
+import com.tekion.GameCrick.model.ScoreBoard;
 import com.tekion.GameCrick.model.Team;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ScoreboardService {
+    @Autowired
+    private ScoreBoardRepository scoreBoardRepository;
     public void printScore(Team teamA, Team teamB, int numOvers){
         System.out.println("Player Name\t\tRuns Scored\t\tBalls faced");
 
-        for(int i=0;i<11;i++){
+        for(int i=0;i<teamA.getTeamMembers().size();i++){
             int bufferSize = 20 - teamA.getTeamMembers().get(i).getPlayerName().length();
             if(teamA.getTeamMembers().get(i).isOut()){
                 System.out.print(teamA.getTeamMembers().get(i).getPlayerName());
@@ -30,17 +40,17 @@ public class ScoreboardService {
         }
 
         System.out.print("Yet to Bat - ");
-        for(int i=0;i<11;i++){
+        for(int i=0;i<teamA.getTeamMembers().size();i++){
             if(teamA.getTeamMembers().get(i).getBallsFaced() == 0){
                 System.out.print(teamA.getTeamMembers().get(i).getPlayerName() + ", ");
             }
         }
         System.out.println("\n");
-        System.out.println(teamA.getTeamName()+" scored "+teamA.getTotalScore() + "/" + teamA.getTotalWickets());
+        System.out.println(teamA.getName()+" scored "+teamA.getTotalScore() + "/" + teamA.getTotalWickets());
         System.out.println("\n");
         System.out.println("Player Name\t\tRuns Scored\t\tBalls faced");
 
-        for(int i=0;i<11;i++){
+        for(int i=0;i<teamB.getTeamMembers().size();i++){
             int bufferSize = 20 - teamB.getTeamMembers().get(i).getPlayerName().length();
 
             if(teamB.getTeamMembers().get(i).isOut()){
@@ -61,23 +71,47 @@ public class ScoreboardService {
             }
         }
         System.out.print("Yet to Bat - ");
-        for(int i=0;i<11;i++){
+        for(int i=0;i<teamB.getTeamMembers().size();i++){
             if(teamB.getTeamMembers().get(i).getBallsFaced() == 0){
                 System.out.print(teamB.getTeamMembers().get(i).getPlayerName() + ", ");
             }
         }
 
         System.out.println("\n");
-        System.out.println(teamB.getTeamName()+" scored "+teamB.getTotalScore() + "/" + teamB.getTotalWickets());
+        System.out.println(teamB.getName()+" scored "+teamB.getTotalScore() + "/" + teamB.getTotalWickets());
         int target = teamA.getTotalScore()+1;
 
-        if(teamB.getTotalScore()>=target && teamB.getTotalWickets()<10 && teamB.getTotalBalls()<=numOvers*6){
-            System.out.println(teamB.getTeamName() + " have won the match by "+ (10-teamB.getTotalWickets()) + " " +
+        if(teamB.getTotalScore()>=target && teamB.getTotalWickets()<teamB.getTeamMembers().size()-1 && teamB.getTotalBalls()<=numOvers*6){
+            System.out.println(teamB.getName() + " have won the match by "+ (teamB.getTeamMembers().size()-1-teamB.getTotalWickets()) + " " +
                                "wickets.");
         }
         else {
-            System.out.println(teamB.getTeamName() + " have lost the match by "+(target - teamB.getTotalScore()) + " runs.");
+            System.out.println(teamB.getName() + " have lost the match by "+(target - teamB.getTotalScore()) + " runs.");
         }
+        saveScore(teamA);
+        saveScore(teamB);
+}
 
+    public void saveScore(Team teamA){
+        for(Player player : teamA.getTeamMembers()){
+            ScoreBoard scoreBoard = ScoreBoard.builder()
+                    .playerId(player.getId())
+                    .playerName(player.getPlayerName())
+                    .runsScored(player.getRunsScored())
+                    .ballsPlayed(player.getBallsFaced())
+                    .wicketsTaken(player.getWicketTaken())
+                    .build();
+            scoreBoardRepository.save(scoreBoard);
+        }
+    }
+
+    public ScoreBoard getScoreBoard(Long playerId){
+        List<ScoreBoard> scoreBoards = (ArrayList<ScoreBoard>) scoreBoardRepository.findAll();
+        for(ScoreBoard scoreBoard : scoreBoards){
+            if(scoreBoard.getPlayerId().equals(playerId))
+                return scoreBoard;
+        }
+        return null;
     }
 }
+//Store all the data properly

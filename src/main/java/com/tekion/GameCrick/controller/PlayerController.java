@@ -5,6 +5,8 @@ import com.tekion.GameCrick.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/player")
 public class PlayerController {
@@ -13,8 +15,8 @@ public class PlayerController {
     private PlayerService playerService;
 
     @PostMapping("/add")
-    public void add(@RequestBody Player player){
-        playerService.add(player);
+    public void add(@RequestBody List<Player> players){
+        playerService.add(players);
     }
 
     @GetMapping("/{id}")

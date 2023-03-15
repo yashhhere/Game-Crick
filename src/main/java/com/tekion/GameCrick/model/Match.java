@@ -1,5 +1,5 @@
 package com.tekion.GameCrick.model;
-import java.util.ArrayList;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,17 +7,17 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "teams")
+@Table(name = "matches")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Team {
+public class Match {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    int totalScore;
-    int totalWickets;
-    int totalBalls;
-    @Transient
-    public ArrayList<Player> teamMembers = new ArrayList<Player>();
+    private Long firstTeamId;
+    private Long secondTeamId;
+    private Long winner;
+    private int noOfOvers;
+
 }

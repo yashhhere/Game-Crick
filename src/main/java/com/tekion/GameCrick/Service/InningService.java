@@ -30,7 +30,7 @@ public class InningService {
                     striker.setBallsFaced(striker.getBallsFaced() + 1);
                     striker.setOut(true);
                     teamA.setTotalWickets(teamA.getTotalWickets() + 1);
-                    if (index == 11) break outer;
+                    if (index == teamA.getTeamMembers().size()) break outer;
                     striker = teamAPlayers.get(index++);
                 } else if (runs == 6 || runs == 4 || runs == 2 || runs == 0 && teamA.getTotalScore() < target) {
                     striker.setRunsScored(striker.getRunsScored() + runs);
