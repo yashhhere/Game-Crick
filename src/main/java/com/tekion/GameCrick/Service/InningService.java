@@ -1,5 +1,7 @@
 package com.tekion.GameCrick.Service;
+import com.tekion.GameCrick.Repository.ESTeamRepository;
 import com.tekion.GameCrick.Repository.TeamRepository;
+import com.tekion.GameCrick.model.ESTeam;
 import com.tekion.GameCrick.model.Team;
 import com.tekion.GameCrick.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,9 @@ import java.util.ArrayList;
 public class InningService {
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private ESTeamRepository eSTeamRepository;
+
     public void playInning(Team teamA, int numOvers, int target) {
         ArrayList<Player> teamAPlayers = teamA.getTeamMembers();
         int index = 2;
@@ -49,5 +54,14 @@ public class InningService {
             }
         }
         teamRepository.save(teamA);
+        ESTeam temp = ESTeam.builder()
+                .id(teamA.getId())
+                .name(teamA.getName())
+                .totalScore(teamA.getTotalScore())
+                .totalBalls(teamA.getTotalBalls())
+                .totalWickets(teamA.getTotalWickets())
+                .teamMembers(teamA.getTeamMembers())
+                .build();
+        eSTeamRepository.save(temp);
     }
 }

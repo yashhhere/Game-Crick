@@ -1,6 +1,8 @@
 package com.tekion.GameCrick.Service;
 
+import com.tekion.GameCrick.Repository.ESPlayerRepository;
 import com.tekion.GameCrick.Repository.PlayerRepository;
+import com.tekion.GameCrick.model.ESPlayer;
 import com.tekion.GameCrick.model.Player;
 import com.tekion.GameCrick.model.Team;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,22 @@ import java.util.List;
 public class PlayerService {
     @Autowired
     private PlayerRepository playerRepository;
+    @Autowired
+    private ESPlayerRepository eSPlayerRepository;
 
     public void add(List<Player> players){
         for(Player player : players){
+            ESPlayer temp = ESPlayer.builder()
+                    .id(player.getId())
+                    .playerName(player.getPlayerName())
+                    .wicketTaken(player.getWicketTaken())
+                    .ballsFaced(player.getBallsFaced())
+                    .runsScored(player.getRunsScored())
+                    .isOut(player.isOut())
+                    .teamId(player.getTeamId())
+                                    .build();
             playerRepository.save(player);
+            eSPlayerRepository.save(temp);
         }
     }
 

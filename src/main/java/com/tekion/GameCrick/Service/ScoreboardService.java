@@ -1,5 +1,7 @@
 package com.tekion.GameCrick.Service;
+import com.tekion.GameCrick.Repository.ESScoreboardRepository;
 import com.tekion.GameCrick.Repository.ScoreBoardRepository;
+import com.tekion.GameCrick.model.ESScoreboard;
 import com.tekion.GameCrick.model.Player;
 import com.tekion.GameCrick.model.ScoreBoard;
 import com.tekion.GameCrick.model.Team;
@@ -14,7 +16,10 @@ import java.util.List;
 public class ScoreboardService {
     @Autowired
     private ScoreBoardRepository scoreBoardRepository;
-    public void printScore(Team teamA, Team teamB, int numOvers){
+    @Autowired
+    private ESScoreboardRepository eSScoreboardRepository;
+    public String printScore(Team teamA, Team teamB, int numOvers){
+        String winner;
         System.out.println("Player Name\t\tRuns Scored\t\tBalls faced");
 
         for(int i=0;i<teamA.getTeamMembers().size();i++){
@@ -81,15 +86,19 @@ public class ScoreboardService {
         System.out.println(teamB.getName()+" scored "+teamB.getTotalScore() + "/" + teamB.getTotalWickets());
         int target = teamA.getTotalScore()+1;
 
-        if(teamB.getTotalScore()>=target && teamB.getTotalWickets()<teamB.getTeamMembers().size()-1 && teamB.getTotalBalls()<=numOvers*6){
+        if(teamB.getTotalScore()>=target){
+            winner = teamB.getName();
             System.out.println(teamB.getName() + " have won the match by "+ (teamB.getTeamMembers().size()-1-teamB.getTotalWickets()) + " " +
                                "wickets.");
         }
         else {
-            System.out.println(teamB.getName() + " have lost the match by "+(target - teamB.getTotalScore()) + " runs.");
+            winner = teamA.getName();
+            System.out.println(teamB.getName() + " have lost the match by "+(target -1 - teamB.getTotalScore()) + " " +
+                               "runs.");
         }
         saveScore(teamA);
         saveScore(teamB);
+        return winner;
 }
 
     public void saveScore(Team teamA){
@@ -102,6 +111,14 @@ public class ScoreboardService {
                     .wicketsTaken(player.getWicketTaken())
                     .build();
             scoreBoardRepository.save(scoreBoard);
+            ESScoreboard temp = ESScoreboard.builder()
+                                                     .playerId(player.getId())
+                                                     .playerName(player.getPlayerName())
+                                                     .runsScored(player.getRunsScored())
+                                                     .ballsPlayed(player.getBallsFaced())
+                                                     .wicketsTaken(player.getWicketTaken())
+                                                     .build();
+            eSScoreboardRepository.save(temp);
         }
     }
 
@@ -114,4 +131,3 @@ public class ScoreboardService {
         return null;
     }
 }
-//Store all the data properly
