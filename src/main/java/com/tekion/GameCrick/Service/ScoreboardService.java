@@ -14,7 +14,8 @@ import java.util.List;
 public class ScoreboardService {
     @Autowired
     private ScoreBoardRepository scoreBoardRepository;
-    public void printScore(Team teamA, Team teamB, int numOvers){
+    public String printScore(Team teamA, Team teamB, int numOvers){
+        String winner;
         System.out.println("Player Name\t\tRuns Scored\t\tBalls faced");
 
         for(int i=0;i<teamA.getTeamMembers().size();i++){
@@ -81,15 +82,19 @@ public class ScoreboardService {
         System.out.println(teamB.getName()+" scored "+teamB.getTotalScore() + "/" + teamB.getTotalWickets());
         int target = teamA.getTotalScore()+1;
 
-        if(teamB.getTotalScore()>=target && teamB.getTotalWickets()<teamB.getTeamMembers().size()-1 && teamB.getTotalBalls()<=numOvers*6){
+        if(teamB.getTotalScore()>=target){
+            winner = teamB.getName();
             System.out.println(teamB.getName() + " have won the match by "+ (teamB.getTeamMembers().size()-1-teamB.getTotalWickets()) + " " +
                                "wickets.");
         }
         else {
-            System.out.println(teamB.getName() + " have lost the match by "+(target - teamB.getTotalScore()) + " runs.");
+            winner = teamA.getName();
+            System.out.println(teamB.getName() + " have lost the match by "+(target -1 - teamB.getTotalScore()) + " " +
+                               "runs.");
         }
         saveScore(teamA);
         saveScore(teamB);
+        return winner;
 }
 
     public void saveScore(Team teamA){

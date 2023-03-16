@@ -38,7 +38,17 @@ public class GameService {
 
         play(teamA, teamB, numOvers);
 
-        scoreboardService.printScore(teamA, teamB, numOvers);
+        String winnerTeam = scoreboardService.printScore(teamA, teamB, numOvers);
+
+        Match matchDB = Match.builder()
+                           .firstTeamId(teamA.getId())
+                           .secondTeamId(teamB.getId())
+                           .noOfOvers(numOvers)
+                           .team1Total(teamA.getTotalScore())
+                           .team2Total(teamB.getTotalScore())
+                             .winner(winnerTeam)
+                           .build();
+        matchRepository.save(matchDB);
     }
 
     public void play(Team teamA, Team teamB, int numOvers){

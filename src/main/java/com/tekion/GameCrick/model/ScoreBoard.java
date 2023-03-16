@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "scoreboard")
+@Table(name = "scoreboard", indexes = {@Index(name = "index_playerName", columnList = "playerName")})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

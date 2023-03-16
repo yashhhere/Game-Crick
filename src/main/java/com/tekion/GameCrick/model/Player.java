@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "Player", indexes = {@Index(name = "index_playerName", columnList = "playerName")})
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,14 +28,10 @@ public class Player {
 
     public int getRunABall(String playerKind) {
         if(playerKind.equals("batsman")){
-            //   Score sc = new Score();
-            //   return (int)sc.nextSkewedBoundedDouble(-2, 8, 7);
             return (int)(Math.random()*8);
         }
         else if(playerKind.equals("bowler")){
-            //   Score sc = new Score();
-            //   return (int)sc.nextSkewedBoundedDouble(-2, 8, -1);
-            return (int)(Math.random()*9);
+            return (int)(Math.random()*10);
         }
         return 0;
     }
