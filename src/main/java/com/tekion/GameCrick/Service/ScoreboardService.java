@@ -18,6 +18,7 @@ public class ScoreboardService {
     private ScoreBoardRepository scoreBoardRepository;
     @Autowired
     private ESScoreboardRepository eSScoreboardRepository;
+
     public String printScore(Team teamA, Team teamB, int numOvers){
         String winner;
         System.out.println("Player Name\t\tRuns Scored\t\tBalls faced");
