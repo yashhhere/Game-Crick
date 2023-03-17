@@ -1,7 +1,9 @@
 package com.tekion.GameCrick.Service;
+import com.tekion.GameCrick.Repository.ESMatchRepository;
 import com.tekion.GameCrick.Repository.MatchRepository;
 import com.tekion.GameCrick.Repository.PlayerRepository;
 import com.tekion.GameCrick.Repository.TeamRepository;
+import com.tekion.GameCrick.model.ESMatch;
 import com.tekion.GameCrick.model.Match;
 import com.tekion.GameCrick.model.Player;
 import com.tekion.GameCrick.model.Team;
@@ -12,6 +14,8 @@ import java.util.Scanner;
 
 @Service
 public class GameService {
+    @Autowired
+    private ESMatchRepository eSMatchRepository;
     @Autowired
     private InningService inningService;
     @Autowired
@@ -48,7 +52,22 @@ public class GameService {
                            .team2Total(teamB.getTotalScore())
                              .winner(winnerTeam)
                            .build();
+
+        ESMatch matchDBES = ESMatch.builder()
+                                   .firstTeamId(teamA.getId())
+                                   .secondTeamId(teamB.getId())
+                                   .noOfOvers(numOvers)
+                                   .team1Total(teamA.getTotalScore())
+                                   .team2Total(teamB.getTotalScore())
+                                   .winner(winnerTeam)
+                                   .build();
+
         matchRepository.save(matchDB);
+        eSMatchRepository.save(matchDBES);
+
+
+        
+
     }
 
     public void play(Team teamA, Team teamB, int numOvers){

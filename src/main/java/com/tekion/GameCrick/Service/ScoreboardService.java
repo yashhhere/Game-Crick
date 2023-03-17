@@ -1,5 +1,7 @@
 package com.tekion.GameCrick.Service;
+import com.tekion.GameCrick.Repository.ESScoreboardRepository;
 import com.tekion.GameCrick.Repository.ScoreBoardRepository;
+import com.tekion.GameCrick.model.ESScoreboard;
 import com.tekion.GameCrick.model.Player;
 import com.tekion.GameCrick.model.ScoreBoard;
 import com.tekion.GameCrick.model.Team;
@@ -14,6 +16,9 @@ import java.util.List;
 public class ScoreboardService {
     @Autowired
     private ScoreBoardRepository scoreBoardRepository;
+    @Autowired
+    private ESScoreboardRepository eSScoreboardRepository;
+
     public String printScore(Team teamA, Team teamB, int numOvers){
         String winner;
         System.out.println("Player Name\t\tRuns Scored\t\tBalls faced");
@@ -107,6 +112,14 @@ public class ScoreboardService {
                     .wicketsTaken(player.getWicketTaken())
                     .build();
             scoreBoardRepository.save(scoreBoard);
+            ESScoreboard temp = ESScoreboard.builder()
+                                                     .playerId(player.getId())
+                                                     .playerName(player.getPlayerName())
+                                                     .runsScored(player.getRunsScored())
+                                                     .ballsPlayed(player.getBallsFaced())
+                                                     .wicketsTaken(player.getWicketTaken())
+                                                     .build();
+            eSScoreboardRepository.save(temp);
         }
     }
 
@@ -119,4 +132,3 @@ public class ScoreboardService {
         return null;
     }
 }
-//Store all the data properly
